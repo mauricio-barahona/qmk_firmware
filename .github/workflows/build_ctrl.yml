@@ -1,0 +1,26 @@
+name: Build Drop CTRL OpenRGB
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup QMK
+        uses: qmk/qmk_firmware/.github/actions/setup-qmk@master
+
+      - name: Build
+        run: |
+          qmk compile -kb massdrop/ctrl -km default
+
+      - name: Upload Firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: drop-ctrl-firmware
+          path: |
+            *.hex
+            *.bin
